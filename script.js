@@ -6,13 +6,11 @@
 // Quiz Information | Questions and Answers
 // questionNumber tells user which question they are on
 const questionNumber = document.querySelector('[data-question-number]');
-questionNumber.dataset = 0;
+questionNumber.dataset.currentQuestion = 0;
 // questionText displays the question
 const questionText = document.querySelector('[data-question-text]');
-questionText.dataset = "";
 // Answer Buttons
 const answerButtons = document.querySelectorAll('[data-answer-button]');
-answerButtons.dataset = "";
 // Quiz Controls | Start, Next, Results, Restart
 const startButton = document.querySelector('[data-start-button]');
 const nextButton = document.querySelector('[data-next-button]');
@@ -94,7 +92,6 @@ const quizQuestions = [
         ]
     }
 ];
-
 // initialize the quiz
 generateQuiz(quizQuestions);
 
@@ -108,10 +105,16 @@ function generateQuiz(quizQuestions) {
     function startButton() {
         // Display the first question number and question along with answers, once the start button is clicked.
         document.querySelector('[data-start-button]').addEventListener('click', () => {
-            questionNumber.dataset++;
+            questionNumber.dataset.currentQuestion++;
+            questionNumber.innerText = `${questionNumber.dataset.currentQuestion}/10 `;
+            // Iterate through the array of questions and answers display the first question and answers.
+            // Update the question number, question text and answerButtons.
             for(let questions in quizQuestions) {
-                questionText.dataset = questions.question[0];
-                answerButtons.dataset = questions.answers[{...text}];
+                questionText.innerText = quizQuestions[questions].question[0];
+                answerButtons[0].innerText = quizQuestions[questions].answers[0].text;
+                answerButtons[1].innerText = quizQuestions[questions].answers[1].text;
+                answerButtons[2].innerText = quizQuestions[questions].answers[2].text;
+                answerButtons[3].innerText = quizQuestions[questions].answers[3].text;
             }
         });
     }
