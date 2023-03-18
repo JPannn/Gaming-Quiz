@@ -17,12 +17,12 @@ const restartButton = document.querySelector('[data-restart-button]');
 
 const quizQuestions = [
     questions = {
-        question: "What game did Mario first appear in?", // 1
-        answers: [
+        question1: "What game did Mario first appear in?", // 1
+        answers1: [
             {text: "Super Mario Bros.", correct: false},
             {text: "Donkey Kong", correct: true},
             {text: "Game & Watch", correct: false},
-            {text: "", correct: false}
+            {text: "Metroid", correct: false}
         ],
         question: "Nicknamed King Koopa, who is the arch nemesis of Mario?",// 2
         answers: [
@@ -96,40 +96,23 @@ generateQuiz(quizQuestions);
 // Start Quiz Function
 
 function generateQuiz(quizQuestions) {
-    startButton();
+    startQuiz();
     // nextButton();
 
-    function startButton() {
+    function startQuiz() {
         // Display the first question number and question along with answers, once the start button is clicked.
-        document.querySelector('[data-start-button]').addEventListener('click', () => {
-            questionNumber.dataset.currentQuestion++;
+        startButton.addEventListener('click', () => {
+            // Hide the start button
+            startButton.classList.add('hide');
+            questionNumber.dataset.currentQuestion = 1;
             questionNumber.innerText = `${questionNumber.dataset.currentQuestion}/10 `;
-            // Iterate through the array of questions and answers display the first question and answers.
-            // Update the question number, question text and answerButtons.
             for(const questions in quizQuestions) {
-                const question = quizQuestions[questions].question;
-                
-                questionText.innerText = question;
-                answerButtons[0].innerText = quizQuestions[questions].answers[0].text;
-                answerButtons[1].innerText = quizQuestions[questions].answers[1].text;
-                answerButtons[2].innerText = quizQuestions[questions].answers[2].text;
-                answerButtons[3].innerText = quizQuestions[questions].answers[3].text;
-            }
+                questionText.innerText = quizQuestions[questions].question1;
+                answerButtons.forEach((button, index) => {
+                    button.innerText = quizQuestions[questions].answers1[index].text;
+                });
+            };
         });
     }
-    // function nextButton(){
-    //     // Display the next question number and question along with answers, once the next button is clicked.
-    //     questionNumber.dataset++;
-    //     questionText.dataset = quizQuestions[1].question;
-    //     answerButtons.dataset = quizQuestions[1].answers;
-    // }
+
 }
-
-// startButton.addEventListener('click', () => {
-//     questionNumber.dataset++;
-//         for(let questions in quizQuestions) {
-//             questionText.dataset = quizQuestions[questions].question[0];
-
-//             answerButtons.dataset = quizQuestions[questions].answers[0].text;
-//         }
-//     });
