@@ -1,14 +1,11 @@
 // Create a Quiz App using JavaScript, HTML and CSS
 // using the following questions and answers with arrays, objects and functions
-
 // Declare variables from the DOM by data attributes
 
 // Quiz Information | Questions and Answers
-// questionNumber tells user which question they are on
-const questionNumber = document.querySelector('[data-question-number]');
+const questionNumber = document.querySelector('[data-question-number]'); // questionNumber tells user which question they are on
 questionNumber.dataset.currentQuestion = 0;
-// questionText displays the question
-const questionText = document.querySelector('[data-question-text]');
+const questionText = document.querySelector('[data-question-text]'); // questionText displays the question
 // Answer Buttons
 const answerButtons = document.querySelectorAll('[data-answer-button]');
 // Quiz Controls | Start, Next, Results, Restart
@@ -109,8 +106,10 @@ function generateQuiz(quizQuestions) {
             questionNumber.innerText = `${questionNumber.dataset.currentQuestion}/10 `;
             // Iterate through the array of questions and answers display the first question and answers.
             // Update the question number, question text and answerButtons.
-            for(let questions in quizQuestions) {
-                questionText.innerText = quizQuestions[questions].question[0];
+            for(const questions in quizQuestions) {
+                const question = quizQuestions[questions].question;
+                
+                questionText.innerText = question;
                 answerButtons[0].innerText = quizQuestions[questions].answers[0].text;
                 answerButtons[1].innerText = quizQuestions[questions].answers[1].text;
                 answerButtons[2].innerText = quizQuestions[questions].answers[2].text;
