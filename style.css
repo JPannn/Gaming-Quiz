@@ -2,3 +2,13 @@
     /* Hides HTML elements */
     visibility: hidden; 
 }
+.correct{
+    /* Displays the correct answer */
+    visibility: visible;
+    color: green;
+}
+.incorrect{
+    /* Displays the incorrect answer */
+    visibility: visible;
+    color: red;
+}
