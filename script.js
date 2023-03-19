@@ -13,6 +13,8 @@ const startButton = document.querySelector('[data-start-button]');
 const nextButton = document.querySelector('[data-next-button]');
 const results = document.querySelector('[data-get-results]');
 const restartButton = document.querySelector('[data-restart-button]');
+// Test
+// const shuffleQuestions, currentQuestionIndex;
 // Questions and Answers for the Quiz
 const quizQuestions = [
     // create key-value pairs for each question and answer from the quizQuestions array
@@ -123,17 +125,18 @@ function generateQuiz() {
             // Hide the start button
             startButton.classList.add('hide');
             // Display the first question number and question along with answers
-            questionNumber.innerText = 1;
+            questionNumber.dataset.currentQuestion = 1;
+            questionNumber.innerText = questionNumber.dataset.currentQuestion;
             questionText.innerText = quizQuestions[0].question;
             answerButtons.forEach((button, index) => {
                 button.innerText = quizQuestions[0].answers[index].text;
             });
             // Check if the answer is correct or not
-            correctIncorrect();
+            checkAnswer();
         });
     }
 
-    function correctIncorrect() {
+    function checkAnswer() {
         // check answer button for correct or incorrect after questionAnswers is displayed
         answerButtons.forEach((button, index) => {
             button.addEventListener('click', () => {
@@ -153,9 +156,30 @@ function generateQuiz() {
     }
 
     function nextButtonFunctionality() {
-        // Display the next question number and question along with answers, once the next button is clicked.
+        nextButton.addEventListener('click', () => {
+
+        });
     }
-
 }
+// if(index === quizQuestions.length - 1) {
+//     nextButton.classList.add('hide');
+//     displayAnswer.innerText = "";
+//     answerButtons.forEach((button) => button.disabled = false);
+// }
 
-// Coding, Gaming, Running, Reading, Music, Watching Youtube to study and enjoy
+// nextButton.addEventListener('click', () => {
+//     // Increment the question number
+//     questionNumber.dataset.currentQuestion = index + 1;
+//     questionNumber.innerText = questionNumber.dataset.currentQuestion;
+//     // reset the display answer
+//     displayAnswer.innerText = "";
+//     // reset the answer buttons
+//     answerButtons.forEach((button) => button.disabled = false);
+//     // Display the next question
+//     questionText.innerText = quizQuestions[index].question;
+//     // Display the next set of answers
+//     answerButtons.forEach((button, index) => button.innerText = question.answers[index].text);
+//     // Check if the answer is correct or not
+//     checkAnswer();
+//     // Hide the next button if there are no more questions
+// });
