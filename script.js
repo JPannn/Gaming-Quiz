@@ -115,10 +115,9 @@ generateQuiz();
 
 function generateQuiz() {
 
-    startQuiz();
-    nextButton();
-
-    function startQuiz() {
+    startButtonFunctionality();
+    nextButtonFunctionality();
+    function startButtonFunctionality() {
         // Display the first question number and question along with answers, once the start button is clicked.
         startButton.addEventListener('click', () => {
             // Hide the start button
@@ -141,20 +140,22 @@ function generateQuiz() {
                 // enable the answer button
                 button.disabled = false;
                 if(quizQuestions[0].answers[index].correct !== true) {
-                    console.log("Incorrect");
                     displayAnswer.innerText = "Incorrect!";
                 } else {
-                    console.log("Correct");
                     displayAnswer.innerText = "Correct!";
                     // disable all answer buttons after correct answer is selected
                     answerButtons.forEach((button) => button.disabled = true);
+                    // unhide the next button
+                    nextButton.classList.remove('hide');
                 }
             });
         });
     }
 
-    function nextButton() {
+    function nextButtonFunctionality() {
         // Display the next question number and question along with answers, once the next button is clicked.
     }
 
 }
+
+// Coding, Gaming, Running, Reading, Music, Watching Youtube to study and enjoy
