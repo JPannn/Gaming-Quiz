@@ -3,18 +3,19 @@
 // Declare variables from the DOM by data attributes
 
 // Quiz Information | Questions and Answers
+const quizInfo = document.querySelector('[data-quiz-info]'); // quizInfo displays the quiz information
 const questionNumber = document.querySelector('[data-question-number]'); // questionNumber tells user which question they are on
-const questionText = document.querySelector('[data-question-text]'); // questionText displays the question
-const displayAnswer = document.querySelector('[data-display-answer]'); // checkAnswer checks if the answer is correct or not
-// Answer Buttons
-const answerButtons = document.querySelectorAll('[data-answer-button]');
+const questionText = document.querySelector('[data-question-text]'); // questionText displays the question text
+// Answer Buttons Container | Displays the answer buttons
+const answerButtonsContainer = document.querySelector('[data-display-answer]');
+// let answerButtons = document.querySelectorAll('[data-answer-button]');
 // Quiz Controls | Start, Next, Results, Restart
 const startButton = document.querySelector('[data-start-button]');
 const nextButton = document.querySelector('[data-next-button]');
 const results = document.querySelector('[data-get-results]');
 const restartButton = document.querySelector('[data-restart-button]');
-// Test
-// const shuffleQuestions, currentQuestionIndex;
+// Current Array Index
+questionNumber.dataset.value = 0;
 // Questions and Answers for the Quiz
 const quizQuestions = [
     // create key-value pairs for each question and answer from the quizQuestions array
@@ -52,7 +53,7 @@ const quizQuestions = [
             {text: "Super Mushroom", correct: true},
             {text: "Mega Mushroom", correct: false},
             {text: "Ultra Mushroom", correct: false},
-            {text: "Mushroom", correct: false}
+            {text: "Giga Mushroom", correct: false}
         ]
     },
     {
@@ -111,75 +112,98 @@ const quizQuestions = [
     }
 ];
 
-// initialize the quiz
+// Start Quiz
 generateQuiz();
-// Start Quiz Function
 
-function generateQuiz() {
-
+function generateQuiz(){
+    // Invoke functions
     startButtonFunctionality();
-    nextButtonFunctionality();
+    // nextButtonFunctionality();
+    // answerButtonFunctionality();
+    // restartButtonFunctionality();
+    // resultButtonFunctionality();
+
+    // Quiz Logic | Shuffles the Questions but not the Answers
+    const shuffledQuestions = quizQuestions.sort(() => Math.random() - .5);
+
+    // Start Button Functionality
     function startButtonFunctionality() {
-        // Display the first question number and question along with answers, once the start button is clicked.
-        startButton.addEventListener('click', () => {
-            // Hide the start button
+        startButton.addEventListener('click', function() {
+            // Hide Start Button
             startButton.classList.add('hide');
-            // Display the first question number and question along with answers
-            questionNumber.dataset.currentQuestion = 1;
-            questionNumber.innerText = questionNumber.dataset.currentQuestion;
-            questionText.innerText = quizQuestions[0].question;
-            answerButtons.forEach((button, index) => {
-                button.innerText = quizQuestions[0].answers[index].text;
-            });
-            // Check if the answer is correct or not
+            // Show Buttons needed for Quiz
+            nextButton.classList.remove('hide');
+            // Show Information needed for Quiz
+            quizInfo.classList.remove('hide');
+            // Show Question Number, Question Text and Answer Buttons
+            showQuestion();
+            showAnswers();
             checkAnswer();
+        })
+
+    }
+
+    function showQuestion() {
+        //Increment the question number
+        questionNumber.dataset.value++;
+        // Display the question number
+        questionNumber.innerHTML = `Question ${questionNumber.dataset.value}.`;
+        // Display the question text
+        questionText.innerHTML = shuffledQuestions[questionNumber.dataset.value].question;
+    }
+
+    function showAnswers() {
+        // Loop through the answers array and create the answer buttons to display
+        shuffledQuestions[questionNumber.dataset.value].answers.forEach(answer => {
+            // Create answer button
+            const tempButton = document.createElement('button');
+            // Add class to answer button
+            tempButton.classList.add('answerContainer');
+            // Add text to answer button
+            tempButton.innerText = answer.text;
+            // Add answer button to answer buttons container
+            answerButtonsContainer.append(tempButton);
+            // if answer is correct add 'correct' class to button else add 'incorrect' class
+            if (answer.correct) {
+                tempButton.dataset.correct = answer.correct;
+            } else {
+                tempButton.dataset.incorrect = answer.incorrect;
+            }
         });
     }
 
     function checkAnswer() {
-        // check answer button for correct or incorrect after questionAnswers is displayed
-        answerButtons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                // enable the answer button
-                button.disabled = false;
-                if(quizQuestions[0].answers[index].correct !== true) {
-                    displayAnswer.innerText = "Incorrect!";
-                } else {
-                    displayAnswer.innerText = "Correct!";
-                    // disable all answer buttons after correct answer is selected
-                    answerButtons.forEach((button) => button.disabled = true);
-                    // unhide the next button
-                    nextButton.classList.remove('hide');
+        // Add event listener to answer buttons container
+        answerButtonsContainer.addEventListener('click', function(e) {
+            // Check if the target is a button
+            if (e.target.nodeName === 'BUTTON') {
+                // Get the correct answer
+                const correct = e.target.dataset.correct;
+                // Get the incorrect answer
+                const incorrect = e.target.dataset.incorrect;
+                // If correct answer is selected
+                if (correct) {
+                    // Add 'correct' class to button
+                    e.target.classList.add('correct');
+                    // If incorrect answer is selected
+                } else if (incorrect) {
+                    // Add 'incorrect' class to button
+                    e.target.classList.add('incorrect');
                 }
-            });
+            }
         });
     }
 
-    function nextButtonFunctionality() {
-        nextButton.addEventListener('click', () => {
+    function resetState() {
+        // Clear the answer buttons container
 
-        });
     }
 }
-// if(index === quizQuestions.length - 1) {
-//     nextButton.classList.add('hide');
-//     displayAnswer.innerText = "";
-//     answerButtons.forEach((button) => button.disabled = false);
-// }
-
-// nextButton.addEventListener('click', () => {
-//     // Increment the question number
-//     questionNumber.dataset.currentQuestion = index + 1;
-//     questionNumber.innerText = questionNumber.dataset.currentQuestion;
-//     // reset the display answer
-//     displayAnswer.innerText = "";
-//     // reset the answer buttons
-//     answerButtons.forEach((button) => button.disabled = false);
-//     // Display the next question
-//     questionText.innerText = quizQuestions[index].question;
-//     // Display the next set of answers
-//     answerButtons.forEach((button, index) => button.innerText = question.answers[index].text);
-//     // Check if the answer is correct or not
-//     checkAnswer();
-//     // Hide the next button if there are no more questions
-// });
+            // // Create answer button
+            // const tempButton = document.createElement('button');
+            // // Add class to answer button
+            // tempButton.classList.add('answerContainer');
+            // // Add text to answer button
+            // tempButton.innerText = answer.text;
+            // // Add answer button to answer buttons container
+            // answerButtonsContainer.append(tempButton);
