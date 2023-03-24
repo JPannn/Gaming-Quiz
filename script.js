@@ -6,16 +6,21 @@
 const quizInfo = document.querySelector('[data-quiz-info]'); // quizInfo displays the quiz information
 const questionNumber = document.querySelector('[data-question-number]'); // questionNumber tells user which question they are on
 const questionText = document.querySelector('[data-question-text]'); // questionText displays the question text
+const correctAnswers = document.querySelector('[data-user-score]'); // userScore displays the user's score
 // Answer Buttons Container | Displays the answer buttons
 const answerButtonsContainer = document.querySelector('[data-display-answer]');
 // let answerButtons = document.querySelectorAll('[data-answer-button]');
 // Quiz Controls | Start, Next, Results, Restart
 const startButton = document.querySelector('[data-start-button]');
 const nextButton = document.querySelector('[data-next-button]');
+const resultsButton = document.querySelector('[data-results-button]');
 const results = document.querySelector('[data-get-results]');
 const restartButton = document.querySelector('[data-restart-button]');
 // Current Array Index
 questionNumber.dataset.value = 0;
+// User Score
+correctAnswers.dataset.value = 0;
+console.log(correctAnswers.dataset.value);
 // Questions and Answers for the Quiz
 const quizQuestions = [
     // create key-value pairs for each question and answer from the quizQuestions array
@@ -111,6 +116,8 @@ const quizQuestions = [
         ]
     }
 ];
+// Quiz Logic | Shuffles the Questions but not the Answers
+const shuffledQuestions = quizQuestions.sort(() => Math.random() - .5);
 
 // Start Quiz
 generateQuiz();
@@ -118,13 +125,10 @@ generateQuiz();
 function generateQuiz(){
     // Invoke functions
     startButtonFunctionality();
-    // nextButtonFunctionality();
-    // answerButtonFunctionality();
+    nextButtonFunctionality();
     // restartButtonFunctionality();
-    // resultButtonFunctionality();
-
-    // Quiz Logic | Shuffles the Questions but not the Answers
-    const shuffledQuestions = quizQuestions.sort(() => Math.random() - .5);
+    console.log(shuffledQuestions);
+    console.log(shuffledQuestions[questionNumber.dataset.value].answers);
 
     // Start Button Functionality
     function startButtonFunctionality() {
@@ -138,72 +142,106 @@ function generateQuiz(){
             // Show Question Number, Question Text and Answer Buttons
             showQuestion();
             showAnswers();
-            checkAnswer();
         })
 
     }
 
     function showQuestion() {
-        //Increment the question number
-        questionNumber.dataset.value++;
-        // Display the question number
-        questionNumber.innerHTML = `Question ${questionNumber.dataset.value}.`;
-        // Display the question text
-        questionText.innerHTML = shuffledQuestions[questionNumber.dataset.value].question;
+        if (questionNumber.dataset.value != 10) {
+            // Display the question text
+            questionText.innerText = shuffledQuestions[questionNumber.dataset.value].question;
+            // Increment the question number
+            questionNumber.dataset.value++;
+            // Display the question number
+            questionNumber.innerText = `Question ${questionNumber.dataset.value}.`;
+        } else {
+            //Hide question number
+            questionNumber.classList.add('hide');
+            //Hide question text
+            questionText.classList.add('hide');
+
+        }
     }
 
     function showAnswers() {
-        // Loop through the answers array and create the answer buttons to display
-        shuffledQuestions[questionNumber.dataset.value].answers.forEach(answer => {
-            // Create answer button
-            const tempButton = document.createElement('button');
-            // Add class to answer button
-            tempButton.classList.add('answerContainer');
-            // Add text to answer button
-            tempButton.innerText = answer.text;
-            // Add answer button to answer buttons container
-            answerButtonsContainer.append(tempButton);
-            // if answer is correct add 'correct' class to button else add 'incorrect' class
-            if (answer.correct) {
-                tempButton.dataset.correct = answer.correct;
-            } else {
-                tempButton.dataset.incorrect = answer.incorrect;
-            }
-        });
+        if(questionNumber.dataset.value != 10) {
+                // Loop through the answers array and create the answer buttons to display
+            shuffledQuestions[questionNumber.dataset.value].answers.forEach(answer => {
+                // Create answer button
+                const tempButton = document.createElement('button');
+                // Add class to answer button
+                tempButton.classList.add('answerContainer');
+                // Add text to answer button
+                tempButton.innerText = answer.text;
+                // Add answer button to answer buttons container
+                answerButtonsContainer.append(tempButton);
+                // if answer is correct add 'correct' class to button else add 'incorrect' class
+                if (answer.correct == true) {
+                    tempButton.dataset.correct = answer.correct;
+                } else if (answer.correct == false){
+                    tempButton.dataset.incorrect = answer.correct;
+                }
+                checkAnswer();
+            });
+        }
     }
 
     function checkAnswer() {
+        // only check answer if button clicked is in answer buttons container
         // Add event listener to answer buttons container
         answerButtonsContainer.addEventListener('click', function(e) {
-            // Check if the target is a button
-            if (e.target.nodeName === 'BUTTON') {
-                // Get the correct answer
-                const correct = e.target.dataset.correct;
-                // Get the incorrect answer
-                const incorrect = e.target.dataset.incorrect;
-                // If correct answer is selected
-                if (correct) {
-                    // Add 'correct' class to button
-                    e.target.classList.add('correct');
-                    // If incorrect answer is selected
-                } else if (incorrect) {
-                    // Add 'incorrect' class to button
-                    e.target.classList.add('incorrect');
-                }
+            if(e.target.nodeName == 'BUTTON') {
+                  
             }
         });
     }
 
     function resetState() {
-        // Clear the answer buttons container
+        //clear the answer buttons container
+        answerButtonsContainer.innerText = '';
 
     }
+
+    function nextButtonFunctionality() {
+        nextButton.addEventListener('click', () => {
+            console.log(questionNumber.dataset.value);
+            // check if array.length is equal to questionNumber.dataset.value
+            if (questionNumber.dataset.value < 10) {
+                
+                // if not equal then show next question and answers
+                // Reset the state
+                resetState();
+                // Show next question
+                showQuestion();
+                // Show next answers
+                showAnswers();
+            } else if (questionNumber == 10){
+                resetState();
+                showQuestion();
+                showAnswers();
+                
+            } else {
+                console.log(resultsButton);
+                // if equal then show results
+                // Hide next button
+                nextButton.classList.add('hide');
+                // Show results button
+                resultsButton.classList.remove('hide');
+                // Show results
+                resultsButtonFunctionality();
+            }
+        });
+    }
+
+    function resultsButtonFunctionality() {
+        resultsButton.addEventListener('click', () => {
+            // Hide quiz info
+            quizInfo.classList.add('hide');
+            // Show results
+            results.classList.remove('hide');
+            // Show score
+            score.innerText = `You scored ${userScore.dataset.value} out of 10.`;
+        });
+    }
 }
-            // // Create answer button
-            // const tempButton = document.createElement('button');
-            // // Add class to answer button
-            // tempButton.classList.add('answerContainer');
-            // // Add text to answer button
-            // tempButton.innerText = answer.text;
-            // // Add answer button to answer buttons container
-            // answerButtonsContainer.append(tempButton);
+
