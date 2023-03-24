@@ -20,7 +20,6 @@ const restartButton = document.querySelector('[data-restart-button]');
 questionNumber.dataset.value = 0;
 // User Score
 correctAnswers.dataset.value = 0;
-console.log(correctAnswers.dataset.value);
 // Questions and Answers for the Quiz
 const quizQuestions = [
     // create key-value pairs for each question and answer from the quizQuestions array
@@ -127,8 +126,6 @@ function generateQuiz(){
     startButtonFunctionality();
     nextButtonFunctionality();
     // restartButtonFunctionality();
-    console.log(shuffledQuestions);
-    console.log(shuffledQuestions[questionNumber.dataset.value].answers);
 
     // Start Button Functionality
     function startButtonFunctionality() {
@@ -139,9 +136,11 @@ function generateQuiz(){
             nextButton.classList.remove('hide');
             // Show Information needed for Quiz
             quizInfo.classList.remove('hide');
-            // Show Question Number, Question Text and Answer Buttons
+            // Show Question Number, Question Text and Answer Buttons 
             showQuestion();
             showAnswers();
+            updateQuestionNumber();
+
         })
 
     }
@@ -150,17 +149,18 @@ function generateQuiz(){
         if (questionNumber.dataset.value != 10) {
             // Display the question text
             questionText.innerText = shuffledQuestions[questionNumber.dataset.value].question;
-            // Increment the question number
-            questionNumber.dataset.value++;
-            // Display the question number
-            questionNumber.innerText = `Question ${questionNumber.dataset.value}.`;
         } else {
             //Hide question number
             questionNumber.classList.add('hide');
             //Hide question text
             questionText.classList.add('hide');
-
         }
+    }
+    function updateQuestionNumber() {
+        // Increment the question number
+        questionNumber.dataset.value++;
+        // Display the question number
+        questionNumber.innerText = `Question ${questionNumber.dataset.value}.`;
     }
 
     function showAnswers() {
@@ -199,35 +199,17 @@ function generateQuiz(){
     function resetState() {
         //clear the answer buttons container
         answerButtonsContainer.innerText = '';
-
     }
 
     function nextButtonFunctionality() {
         nextButton.addEventListener('click', () => {
-            console.log(questionNumber.dataset.value);
-            // check if array.length is equal to questionNumber.dataset.value
-            if (questionNumber.dataset.value < 10) {
-                
-                // if not equal then show next question and answers
-                // Reset the state
-                resetState();
-                // Show next question
-                showQuestion();
-                // Show next answers
-                showAnswers();
-            } else if (questionNumber == 10){
-                resetState();
-                showQuestion();
-                showAnswers();
-                
-            } else {
-                console.log(resultsButton);
-                // if equal then show results
-                // Hide next button
+            resetState();
+            showQuestion();
+            showAnswers();
+            updateQuestionNumber();
+            if(questionNumber.dataset.value == 10) {
                 nextButton.classList.add('hide');
-                // Show results button
                 resultsButton.classList.remove('hide');
-                // Show results
                 resultsButtonFunctionality();
             }
         });
@@ -244,4 +226,3 @@ function generateQuiz(){
         });
     }
 }
-
