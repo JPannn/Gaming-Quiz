@@ -12,3 +12,7 @@
     visibility: visible;
     color: red;
 }
+.disabled{
+    /* Disables the button */
+    pointer-events: none;
+}

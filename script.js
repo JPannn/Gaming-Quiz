@@ -6,7 +6,7 @@
 const quizInfo = document.querySelector('[data-quiz-info]'); // quizInfo displays the quiz information
 const questionNumber = document.querySelector('[data-question-number]'); // questionNumber tells user which question they are on
 const questionText = document.querySelector('[data-question-text]'); // questionText displays the question text
-const correctAnswers = document.querySelector('[data-user-score]'); // userScore displays the user's score
+const displayScore = document.querySelector('[data-display-score]'); // userScore displays the user's score
 // Answer Buttons Container | Displays the answer buttons
 const answerButtonsContainer = document.querySelector('[data-display-answer]');
 // let answerButtons = document.querySelectorAll('[data-answer-button]');
@@ -19,7 +19,8 @@ const restartButton = document.querySelector('[data-restart-button]');
 // Current Array Index
 questionNumber.dataset.value = 0;
 // User Score
-correctAnswers.dataset.value = 0;
+let userScore = 0;
+
 // Questions and Answers for the Quiz
 const quizQuestions = [
     // create key-value pairs for each question and answer from the quizQuestions array
@@ -117,7 +118,6 @@ const quizQuestions = [
 ];
 // Quiz Logic | Shuffles the Questions but not the Answers
 const shuffledQuestions = quizQuestions.sort(() => Math.random() - .5);
-
 // Start Quiz
 generateQuiz();
 
@@ -139,8 +139,8 @@ function generateQuiz(){
             // Show Question Number, Question Text and Answer Buttons 
             showQuestion();
             showAnswers();
+            checkAnswer();
             updateQuestionNumber();
-
         })
 
     }
@@ -156,6 +156,7 @@ function generateQuiz(){
             questionText.classList.add('hide');
         }
     }
+
     function updateQuestionNumber() {
         // Increment the question number
         questionNumber.dataset.value++;
@@ -164,41 +165,52 @@ function generateQuiz(){
     }
 
     function showAnswers() {
-        if(questionNumber.dataset.value != 10) {
                 // Loop through the answers array and create the answer buttons to display
-            shuffledQuestions[questionNumber.dataset.value].answers.forEach(answer => {
-                // Create answer button
-                const tempButton = document.createElement('button');
-                // Add class to answer button
-                tempButton.classList.add('answerContainer');
-                // Add text to answer button
-                tempButton.innerText = answer.text;
-                // Add answer button to answer buttons container
-                answerButtonsContainer.append(tempButton);
-                // if answer is correct add 'correct' class to button else add 'incorrect' class
-                if (answer.correct == true) {
-                    tempButton.dataset.correct = answer.correct;
-                } else if (answer.correct == false){
-                    tempButton.dataset.incorrect = answer.correct;
-                }
-                checkAnswer();
-            });
-        }
+                Array.from(shuffledQuestions[questionNumber.dataset.value].answers).forEach(answer => {
+                    // Create answer button
+                    const tempButton = document.createElement('button');
+                    // Add class to answer button
+                    tempButton.classList.add('answerContainer');
+                    // Add text to answer button
+                    tempButton.innerText = answer.text;
+                    // Add answer button to answer buttons container
+                    answerButtonsContainer.append(tempButton);
+                    // if answer is correct add 'correct' class to button else add 'incorrect' class
+                    if (answer.correct == true) {
+                        tempButton.dataset.correct = answer.correct;
+                    } else if (answer.correct == false){
+                        tempButton.dataset.incorrect = answer.correct;
+                    }
+                });
     }
 
     function checkAnswer() {
         // only check answer if button clicked is in answer buttons container
         // Add event listener to answer buttons container
         answerButtonsContainer.addEventListener('click', function(e) {
-            if(e.target.nodeName == 'BUTTON') {
-                  
+            // If the correct answer add 'correct' class to button else add 'incorrect' class
+            while (e.target.classList.contains('answerContainer')) {
+                if (e.target.dataset.correct) {
+                    e.target.classList.add('correct');
+                    const incrementScore = 1;
+                    userScore = userScore + incrementScore;
+                    console.log(userScore);
+                    displayScore.innerText = `userScore: ${userScore}`;
+                } else if (e.target.dataset.incorrect) {
+                    e.target.classList.add('incorrect');
+                }
+                // disable the answer buttons container
+                answerButtonsContainer.classList.add('disabled');
             }
         });
-    }
 
+    }
     function resetState() {
         //clear the answer buttons container
         answerButtonsContainer.innerText = '';
+        //remove 'disabled' class from answer buttons container
+        answerButtonsContainer.classList.remove('disabled');
+
     }
 
     function nextButtonFunctionality() {
@@ -206,6 +218,7 @@ function generateQuiz(){
             resetState();
             showQuestion();
             showAnswers();
+            checkAnswer();
             updateQuestionNumber();
             if(questionNumber.dataset.value == 10) {
                 nextButton.classList.add('hide');
@@ -222,7 +235,25 @@ function generateQuiz(){
             // Show results
             results.classList.remove('hide');
             // Show score
-            score.innerText = `You scored ${userScore.dataset.value} out of 10.`;
+            displayScore.innerText = `You scored ${userScore} out of 10.`;
         });
     }
 }
+// Check Answer Functionality
+// ! This function is not working properly
+// ? When incrementing the score based on the correct answer it adds by three instead of one
+            // // If the answer button clicked was correct
+            // if (selectedButton.dataset.correct) {
+            //     // Add 'correct' class to selected button
+            //     selectedButton.classList.add('correct');
+            //     // Increment the user score
+            //     console.log("before" + userScore.dataset.value);
+            //     userScore.dataset.value++; 
+            //     console.log("after" + userScore.dataset.value);
+            //     // Display the user score
+            //     userScore.innerText = `Score: ${userScore.dataset.value}`;
+            //     // If the answer button clicked was incorrect
+            // } else if (selectedButton.dataset.incorrect) {
+            //     // Add 'incorrect' class to selected button
+            //     selectedButton.classList.add('incorrect');
+            // }
