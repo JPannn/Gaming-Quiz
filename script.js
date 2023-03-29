@@ -266,20 +266,3 @@ function generateQuiz(){
         });
     }
 }
-// switch (userScore) {
-//     case userScore <= 0:
-//         // Low Score
-//         results.innerText = 'You are a disgrace to the Mushroom Kingdom';
-//         break;
-//     case userScore >= 1 && userScore <= 100:
-//         // Okay Score
-//         results.innerText = 'Mario would be proud of you';
-//         break;
-//     case userScore >= 101 && userScore <= 200:
-//         // High Score
-//         results.innerText = 'You are a true Super Mario Fan';
-//         break;
-//     default:
-//         results.innerText = 'You are beyond saving';
-//         break;
-// }
