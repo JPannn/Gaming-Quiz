@@ -19,7 +19,7 @@ const restartButton = document.querySelector('[data-restart-button]');
 // Current Array Index
 questionNumber.dataset.value = 0;
 // User Score
-let userScore = 0;
+let userScore = -100;
 
 // Questions and Answers for the Quiz
 const quizQuestions = [
@@ -189,27 +189,33 @@ function generateQuiz(){
         // Add event listener to answer buttons container
         answerButtonsContainer.addEventListener('click', function(e) {
             // If the correct answer add 'correct' class to button else add 'incorrect' class
-            while (e.target.classList.contains('answerContainer')) {
                 if (e.target.dataset.correct) {
                     e.target.classList.add('correct');
-                    const incrementScore = 1;
-                    userScore = userScore + incrementScore;
-                    console.log(userScore);
+                    // Increment the user score
+                    userScore+=5;
+                    // Display the user score
                     displayScore.innerText = `userScore: ${userScore}`;
                 } else if (e.target.dataset.incorrect) {
                     e.target.classList.add('incorrect');
                 }
                 // disable the answer buttons container
                 answerButtonsContainer.classList.add('disabled');
-            }
-        });
-
+            });
     }
     function resetState() {
         //clear the answer buttons container
         answerButtonsContainer.innerText = '';
         //remove 'disabled' class from answer buttons container
         answerButtonsContainer.classList.remove('disabled');
+        //remove 'correct' class from answer buttons
+        Array.from(answerButtonsContainer.children).forEach(button => {
+            button.classList.remove('correct');
+        });
+        //remove 'incorrect' class from answer buttons
+        Array.from(answerButtonsContainer.children).forEach(button => {
+            button.classList.remove('incorrect');
+        });
+
 
     }
 
@@ -230,30 +236,50 @@ function generateQuiz(){
 
     function resultsButtonFunctionality() {
         resultsButton.addEventListener('click', () => {
+            console.log(userScore);
+            // remove answer buttons container
+            answerButtonsContainer.innerText = '';
+            answerButtonsContainer.classList.add('hide');
             // Hide quiz info
             quizInfo.classList.add('hide');
             // Show results
             results.classList.remove('hide');
-            // Show score
-            displayScore.innerText = `You scored ${userScore} out of 10.`;
+            // userScore gets put into a range of 3 different results; -100 - 0, 1 - 100, 101 - 200
+            // use a switch statement to determine which result to display
+            switch (true) {
+                case userScore <= 0:
+                    // Low Score
+                    results.innerText = 'You are a disgrace to the Mushroom Kingdom';
+                    break;
+                case userScore >= 1 && userScore <= 100:
+                    // Okay Score
+                    results.innerText = 'Mario would be proud of you';
+                    break;
+                case userScore >= 101 && userScore <= 200:
+                    // High Score
+                    results.innerText = 'You are a true Super Mario Fan';
+                    break;
+                default:
+                    results.innerText = 'Did you even take the quiz?';
+                    break;
+            }
         });
     }
 }
-// Check Answer Functionality
-// ! This function is not working properly
-// ? When incrementing the score based on the correct answer it adds by three instead of one
-            // // If the answer button clicked was correct
-            // if (selectedButton.dataset.correct) {
-            //     // Add 'correct' class to selected button
-            //     selectedButton.classList.add('correct');
-            //     // Increment the user score
-            //     console.log("before" + userScore.dataset.value);
-            //     userScore.dataset.value++; 
-            //     console.log("after" + userScore.dataset.value);
-            //     // Display the user score
-            //     userScore.innerText = `Score: ${userScore.dataset.value}`;
-            //     // If the answer button clicked was incorrect
-            // } else if (selectedButton.dataset.incorrect) {
-            //     // Add 'incorrect' class to selected button
-            //     selectedButton.classList.add('incorrect');
-            // }
+// switch (userScore) {
+//     case userScore <= 0:
+//         // Low Score
+//         results.innerText = 'You are a disgrace to the Mushroom Kingdom';
+//         break;
+//     case userScore >= 1 && userScore <= 100:
+//         // Okay Score
+//         results.innerText = 'Mario would be proud of you';
+//         break;
+//     case userScore >= 101 && userScore <= 200:
+//         // High Score
+//         results.innerText = 'You are a true Super Mario Fan';
+//         break;
+//     default:
+//         results.innerText = 'You are beyond saving';
+//         break;
+// }
