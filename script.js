@@ -6,21 +6,20 @@
 const quizInfo = document.querySelector('[data-quiz-info]'); // quizInfo displays the quiz information
 const questionNumber = document.querySelector('[data-question-number]'); // questionNumber tells user which question they are on
 const questionText = document.querySelector('[data-question-text]'); // questionText displays the question text
-const displayScore = document.querySelector('[data-display-score]'); // userScore displays the user's score
+const usersCurrentProgress = document.querySelector('[data-current-progress]'); // userScore displays the user's score
 // Answer Buttons Container | Displays the answer buttons
-const answerButtonsContainer = document.querySelector('[data-display-answer]');
+const answerButtonsContainer = document.querySelector('[data-display-answers]');
 // let answerButtons = document.querySelectorAll('[data-answer-button]');
 // Quiz Controls | Start, Next, Results, Restart
 const startButton = document.querySelector('[data-start-button]');
 const nextButton = document.querySelector('[data-next-button]');
 const resultsButton = document.querySelector('[data-results-button]');
-const results = document.querySelector('[data-get-results]');
+const userResults = document.querySelector('[data-user-results]');
 const restartButton = document.querySelector('[data-restart-button]');
 // Current Array Index
 questionNumber.dataset.value = 0;
 // User Score
 let userScore = -100;
-
 // Questions and Answers for the Quiz
 const quizQuestions = [
     // create key-value pairs for each question and answer from the quizQuestions array
@@ -121,19 +120,16 @@ const shuffledQuestions = quizQuestions.sort(() => Math.random() - .5);
 // Start Quiz
 generateQuiz();
 
-function generateQuiz(){
+function generateQuiz() {
     // Invoke functions
     startButtonFunctionality();
     nextButtonFunctionality();
-    // restartButtonFunctionality();
 
     // Start Button Functionality
     function startButtonFunctionality() {
         startButton.addEventListener('click', function() {
             // Hide Start Button
             startButton.classList.add('hide');
-            // Show Buttons needed for Quiz
-            nextButton.classList.remove('hide');
             // Show Information needed for Quiz
             quizInfo.classList.remove('hide');
             // Show Question Number, Question Text and Answer Buttons 
@@ -193,15 +189,40 @@ function generateQuiz(){
                     e.target.classList.add('correct');
                     // Increment the user score
                     userScore+=5;
-                    // Display the user score
-                    displayScore.innerText = `userScore: ${userScore}`;
                 } else if (e.target.dataset.incorrect) {
                     e.target.classList.add('incorrect');
                 }
                 // disable the answer buttons container
                 answerButtonsContainer.classList.add('disabled');
+                // Show the next button if questionNumber.dataset.value is less than 10
+                if (questionNumber.dataset.value != 10) {
+                    nextButton.classList.remove('hide');
+                }
             });
     }
+
+    function userScoreNumberToText() {
+        // displayScore.innerText based on userScore
+        usersCurrentProgress.classList.remove('hide');
+        switch (true) {
+            case userScore <= -50:
+                // Low Score
+                usersCurrentProgress.innerText = 'You\'re Doing Okay...';
+                break;
+            case userScore >= -51 && userScore <= 40:
+                // Okay Score
+                usersCurrentProgress.innerText = 'Great, Keep Going!';
+                break;
+            case userScore >= 41:
+                // High Score
+                usersCurrentProgress.innerText = 'Amazing, You\'re a Superstar!';
+                break;
+            default:
+                usersCurrentProgress.innerText = '...';
+                break;
+        }
+    }
+
     function resetState() {
         //clear the answer buttons container
         answerButtonsContainer.innerText = '';
@@ -215,20 +236,24 @@ function generateQuiz(){
         Array.from(answerButtonsContainer.children).forEach(button => {
             button.classList.remove('incorrect');
         });
-
-
+        // reset userCurrentProgress
+        usersCurrentProgress.innerText = '';
+        // hide Next Button
+        nextButton.classList.add('hide');
     }
 
-    function nextButtonFunctionality() {
+    function nextButtonFunctionality() { 
         nextButton.addEventListener('click', () => {
             resetState();
             showQuestion();
             showAnswers();
             checkAnswer();
+            userScoreNumberToText();
             updateQuestionNumber();
             if(questionNumber.dataset.value == 10) {
                 nextButton.classList.add('hide');
                 resultsButton.classList.remove('hide');
+                userScoreNumberToText();
                 resultsButtonFunctionality();
             }
         });
@@ -236,33 +261,41 @@ function generateQuiz(){
 
     function resultsButtonFunctionality() {
         resultsButton.addEventListener('click', () => {
-            console.log(userScore);
             // remove answer buttons container
             answerButtonsContainer.innerText = '';
             answerButtonsContainer.classList.add('hide');
             // Hide quiz info
             quizInfo.classList.add('hide');
+            // Hide next button
+            nextButton.classList.add('hide');
+            // Hide results button
+            resultsButton.classList.add('hide');
+            // Hide display score
+            usersCurrentProgress.classList.add('hide');
             // Show results
-            results.classList.remove('hide');
+            userResults.classList.remove('hide');
             // userScore gets put into a range of 3 different results; -100 - 0, 1 - 100, 101 - 200
             // use a switch statement to determine which result to display
             switch (true) {
-                case userScore <= 0:
+                case userScore <= -50:
                     // Low Score
-                    results.innerText = 'You are a disgrace to the Mushroom Kingdom';
+                    userResults.innerText = 'You are a disgrace to the Mushroom Kingdom';
                     break;
-                case userScore >= 1 && userScore <= 100:
+                case userScore >= -51 && userScore <= 40:
                     // Okay Score
-                    results.innerText = 'Mario would be proud of you';
+                    userResults.innerText = 'Mario would be proud of you';
                     break;
-                case userScore >= 101 && userScore <= 200:
+                case userScore >= 41:
                     // High Score
-                    results.innerText = 'You are a true Super Mario Fan';
+                    userResults.innerText = 'You are a true Super Mario Fan';
                     break;
                 default:
-                    results.innerText = 'Did you even take the quiz?';
+                    userResults.innerText = 'Did you even take the quiz?';
                     break;
             }
+            // Create a paragraph element to tell the user "refresh the page to restart the quiz"
+            const restartQuizText = document.createElement('p');
+            restartQuizText.innerText = 'Refresh the page to restart the quiz';
         });
     }
 }
