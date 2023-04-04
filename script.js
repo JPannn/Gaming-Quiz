@@ -4,12 +4,12 @@
 
 // Quiz Information | Questions and Answers
 const quizInfo = document.querySelector('[data-quiz-info]'); // quizInfo displays the quiz information
-const questionNumber = document.querySelector('[data-question-number]'); // questionNumber tells user which question they are on
-const questionText = document.querySelector('[data-question-text]'); // questionText displays the question text
-const usersCurrentProgress = document.querySelector('[data-current-progress]'); // userScore displays the user's score
+const questionNumber = document.querySelector('[data-question-number]'); // Tells user which question they are on
+const questionText = document.querySelector('[data-question-text]'); // Displays the question text
+const usersCurrentProgress = document.querySelector('[data-current-progress]'); // Returns a message to user based on score
+const imageContainer = document.getElementById("imageContainer");
 // Answer Buttons Container | Displays the answer buttons
 const answerButtonsContainer = document.querySelector('[data-display-answers]');
-// let answerButtons = document.querySelectorAll('[data-answer-button]');
 // Quiz Controls | Start, Next, Results, Restart
 const startButton = document.querySelector('[data-start-button]');
 const nextButton = document.querySelector('[data-next-button]');
@@ -20,7 +20,8 @@ const restartButton = document.querySelector('[data-restart-button]');
 questionNumber.dataset.value = 0;
 // User Score
 let userScore = -100;
-// Questions and Answers for the Quiz
+
+// Array of Questions and Answers for the Quiz
 const quizQuestions = [
     // create key-value pairs for each question and answer from the quizQuestions array
     {
@@ -115,8 +116,36 @@ const quizQuestions = [
         ]
     }
 ];
+// Array of Images for the Quiz
+const quizScoreImages = [
+    // create key-value pairs of images based on the users score
+    {
+        badScoreImage : "/Mario_Based_On_Score/Sad_Mario.jpg",
+        goodScoreImage : "/Mario_Based_On_Score/Good_Mario.jpg",
+        bestScoreImage : "/Mario_Based_On_Score/Best_Mario.jpg",
+        noScoreImage : "/Mario_Based_On_Score/No_Mario.jpg"
+    }
+
+];
+// Array of 10 images to display to the user as they progress through the quiz
+const tenImagesArray = [
+    "/Random_Mario_Franchise_Photos/MarioPhoto.jpeg",
+    "/Random_Mario_Franchise_Photos/MarioPhoto2.jpg",
+    "/Random_Mario_Franchise_Photos/MarioPhoto3.jpg",
+    "/Random_Mario_Franchise_Photos/MarioPhoto4.jpg",
+    "/Random_Mario_Franchise_Photos/MarioPhoto5.jpg",
+    "/Random_Mario_Franchise_Photos/MarioPhoto6.jpg",
+    "/Random_Mario_Franchise_Photos/MarioPhoto7.jpg",
+    "/Random_Mario_Franchise_Photos/MarioPhoto8.jpg",
+    "/Random_Mario_Franchise_Photos/MarioPhoto9.jpg",
+    "/Random_Mario_Franchise_Photos/MarioPhoto10.jpg"
+];
+
 // Quiz Logic | Shuffles the Questions but not the Answers
 const shuffledQuestions = quizQuestions.sort(() => Math.random() - .5);
+// Shuffle tenImagesArray to display to the user as they progress through the quiz
+const tenShuffledImages = tenImagesArray.sort(() => Math.random() - .5);
+
 // Start Quiz
 generateQuiz();
 
@@ -132,9 +161,10 @@ function generateQuiz() {
             startButton.classList.add('hide');
             // Show Information needed for Quiz
             quizInfo.classList.remove('hide');
-            // Show Question Number, Question Text and Answer Buttons 
+            // Show Question Number, Question Text, Answer Buttons and Image
             showQuestion();
             showAnswers();
+            showImage();
             checkAnswer();
             updateQuestionNumber();
         })
@@ -236,6 +266,8 @@ function generateQuiz() {
         Array.from(answerButtonsContainer.children).forEach(button => {
             button.classList.remove('incorrect');
         });
+        // Reset src of image to empty string
+        imageContainer.src = '';
         // reset userCurrentProgress
         usersCurrentProgress.innerText = '';
         // hide Next Button
@@ -247,6 +279,7 @@ function generateQuiz() {
             resetState();
             showQuestion();
             showAnswers();
+            showImage();
             checkAnswer();
             userScoreNumberToText();
             updateQuestionNumber();
@@ -271,6 +304,8 @@ function generateQuiz() {
             // Hide results button
             resultsButton.classList.add('hide');
             // Hide display score
+            // Reset Image Container
+            imageContainer.src = '';
             usersCurrentProgress.classList.add('hide');
             // Show results
             userResults.classList.remove('hide');
@@ -278,24 +313,40 @@ function generateQuiz() {
             // use a switch statement to determine which result to display
             switch (true) {
                 case userScore <= -50:
-                    // Low Score
+                    // Bad Score
                     userResults.innerText = 'You are a disgrace to the Mushroom Kingdom';
+                    // Show image
+                    imageContainer.src = quizScoreImages[0].badScoreImage;
                     break;
                 case userScore >= -51 && userScore <= 40:
-                    // Okay Score
+                    // Good Score
                     userResults.innerText = 'Mario would be proud of you';
+                    // Show image
+                    imageContainer.src = quizScoreImages[0].goodScoreImage;
                     break;
                 case userScore >= 41:
-                    // High Score
+                    // Best Score
                     userResults.innerText = 'You are a true Super Mario Fan';
+                    // Show image
+                    imageContainer.src = quizScoreImages[0].bestScoreImage;
                     break;
                 default:
+                    // No Score
                     userResults.innerText = 'Did you even take the quiz?';
+                    // Show image
+                    imageContainer.src = quizScoreImages[0].noScoreImage;
                     break;
             }
-            // Create a paragraph element to tell the user "refresh the page to restart the quiz"
-            const restartQuizText = document.createElement('p');
-            restartQuizText.innerText = 'Refresh the page to restart the quiz';
+            showImage(userScore);
         });
+    }
+
+    function showImage(){
+        // Display itterate through tenShuffledImages array and display each image in the image container onclick of start button or next button
+        if (questionNumber.dataset.value != 10) {
+            imageContainer.src = "";
+            const tempImage = tenShuffledImages[questionNumber.dataset.value];
+            imageContainer.src = tempImage;
+        }
     }
 }

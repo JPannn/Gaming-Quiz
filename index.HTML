@@ -6,29 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
-    <title>Quiz App</title>
+    <title>A Simple Mario Quiz</title>
 </head>
 <body>
-    <header>
-        <h1>Quiz App</h1>
-    </header>
-
+    
     <main class="mainContainer">
+        <!-- Container for Header and Image -->
+        <div class="headerImageContainer">
+            <header>
+                <h1>How Well Do You Know Mario?</h1>
+                <h2>Do your best to answer ten questions about the Mario Franchise!</h2>
+            </header>
+            <img src="/Images/Super-Mario-Odyssey-Wallpaper-Desktop.jpg" alt="Mario" class="imageContainer" id="imageContainer" height="500" width="500">
+        </div>
+        <!-- Container for Quiz Information -->
         <div class="quizInformation hide" data-quiz-info>
             <p>
                 <span class="questionNumber" data-question-number>Number</span>
                 <span class="questionText" data-question-text>This is a Question</span>
             </p>
         </div>
-
-        <div class="usersCurrentProgress hide" data-current-progress></div><br>
-
-        <div class="answerContainer" data-display-answers></div><br>
-
+        <!-- Container for Quiz Answers -->
+        <div>
+            <div class="usersCurrentProgress hide" data-current-progress></div><br>
+            <div class="answerContainer" data-display-answers></div><br>
+        </div>
+        <!-- Container for Quiz Controls -->
         <div class="quizControls">
             <button class="startQuiz" data-start-button>Start Quiz</button>
             <button class="nextQuestion hide" data-next-button>Next Question</button>
             <button class="resultsButton hide" data-results-button>Results</button>
+        </div>
+        <!-- Container for Quiz Results -->
+        <div class="finalResults">
             <div class="results hide" data-user-results>How You Did</div>
         </div>
     </main>
