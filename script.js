@@ -17,7 +17,7 @@ const usersCurrentProgress = document.querySelector('[data-current-progress]'); 
 const startButton = document.querySelector('[data-start-button]');
 const nextButton = document.querySelector('[data-next-button]');
 const resultsButton = document.querySelector('[data-results-button]');
-const userResults = document.querySelector('[data-user-results]');
+const finalResults = document.getElementById('finalResults');
 const restartButton = document.querySelector('[data-restart-button]');
 // Current Array Index
 questionNumber.dataset.value = 0;
@@ -154,27 +154,49 @@ generateQuiz();
 
 function generateQuiz() {
     // Invoke functions
-    startButtonFunctionality();
-    nextButtonFunctionality();
+    startButtonClicked();
+    nextButtonClicked();
+
+    // Start Button Clicked
+    function startButtonClicked() {
+        startButton.addEventListener('click', startButtonFunctionality);
+    }
     // Start Button Functionality
     function startButtonFunctionality() {
-        startButton.addEventListener('click', function() {
-            // Hide Start Button
-            startButton.classList.add('hide');
-            // Hide headerContainer by manipulating 
-            headerContainer.classList.add('hide');
-            // Show Information needed for Quiz
-            questionContainer.classList.remove('hide');
-            // Show Question Number, Question Text, Answer Buttons and Image
-            showQuestion();
-            showAnswers();
-            showImage();
-            checkAnswer();
-            updateQuestionNumber();
-        })
-
+        // Hide Start Button
+        startButton.classList.add('hide');
+        // Hide headerContainer by manipulating 
+        headerContainer.classList.add('hide');
+        // Show Information needed for Quiz
+        questionContainer.classList.remove('hide');
+        // Show Question Number, Question Text, Answer Buttons and Image
+        showQuestion();
+        showAnswers();
+        showImage();
+        checkAnswer();
+        updateQuestionNumber();
     }
-
+    // Next Button Clicked
+    function nextButtonClicked() {
+        nextButton.addEventListener('click', nextButtonFunctionality);
+    }
+    // Next Button Functionality
+    function nextButtonFunctionality() {
+        resetState();
+        showQuestion();
+        showAnswers();
+        showImage();
+        checkAnswer();
+        userScoreNumberToText();
+        updateQuestionNumber();
+        if(questionNumber.dataset.value == 10) {
+            nextButton.classList.add('hide');
+            resultsButton.classList.remove('hide');
+            userScoreNumberToText();
+            resultButtonClicked();
+        }
+    }
+    // Shows Question if questionNumber is less than 10
     function showQuestion() {
         if (questionNumber.dataset.value != 10) {
             // Display the question text
@@ -186,14 +208,14 @@ function generateQuiz() {
             questionText.classList.add('hide');
         }
     }
-
+    // Increments the question number and displays it to the user 
     function updateQuestionNumber() {
         // Increment the question number
         questionNumber.dataset.value++;
         // Display the question number
         questionNumber.innerText = `Question ${questionNumber.dataset.value}.`;
     }
-
+    // Show Answer Choices from the Questtion in shuffledQuestions array
     function showAnswers() {
                 // Loop through the answers array and create the answer buttons to display
                 Array.from(shuffledQuestions[questionNumber.dataset.value].answers).forEach(answer => {
@@ -213,28 +235,31 @@ function generateQuiz() {
                     }
                 });
     }
-
+    // Checks if the answer is correct or incorrect
     function checkAnswer() {
         // only check answer if button clicked is in answer buttons container
         // Add event listener to answer buttons container
         answerButtonsContainer.addEventListener('click', function(e) {
-            // If the correct answer add 'correct' class to button else add 'incorrect' class
-                if (e.target.dataset.correct) {
-                    e.target.classList.add('correct');
-                    // Increment the user score
-                    userScore+=5;
-                } else if (e.target.dataset.incorrect) {
-                    e.target.classList.add('incorrect');
-                }
-                // disable the answer buttons container
-                answerButtonsContainer.classList.add('disabled');
-                // Show the next button if questionNumber.dataset.value is less than 10
-                if (questionNumber.dataset.value != 10) {
-                    nextButton.classList.remove('hide');
-                }
-            });
-    }
 
+            // Create an if statement to check if e.target dataset doesn't have correct or incorrect if not then return nothing
+            if (!e.target.dataset.correct && !e.target.dataset.incorrect) {
+                return;
+            } else if (e.target.dataset.correct) {
+                e.target.classList.add('correct');
+                // Increment the user score
+                userScore+=5;
+                answerButtonsContainer.classList.add('disabled');
+            } else if (e.target.dataset.incorrect) {
+                e.target.classList.add('incorrect');
+                answerButtonsContainer.classList.add('disabled');
+            }
+            // Show the next button if questionNumber.dataset.value is less than 10
+            if (questionNumber.dataset.value != 10) {
+                nextButton.classList.remove('hide');
+            }
+        });
+    }
+    // Uses a Range of Numbers from userScore to return a message.
     function userScoreNumberToText() {
         // displayScore.innerText based on userScore
         usersCurrentProgress.classList.remove('hide');
@@ -256,7 +281,7 @@ function generateQuiz() {
                 break;
         }
     }
-
+    //Reset Elements to Default State
     function resetState() {
         //clear the answer buttons container
         answerButtonsContainer.innerText = '';
@@ -277,73 +302,62 @@ function generateQuiz() {
         // hide Next Button
         nextButton.classList.add('hide');
     }
-
-    function nextButtonFunctionality() { 
-        nextButton.addEventListener('click', () => {
-            resetState();
-            showQuestion();
-            showAnswers();
-            showImage();
-            checkAnswer();
-            userScoreNumberToText();
-            updateQuestionNumber();
-            if(questionNumber.dataset.value == 10) {
-                nextButton.classList.add('hide');
-                resultsButton.classList.remove('hide');
-                userScoreNumberToText();
-                resultsButtonFunctionality();
-            }
-        });
+    // Results Button Clicked
+    function resultButtonClicked() {
+        resultsButton.addEventListener('click', resultsButtonFunctionality);
     }
-
+    // Results Button Functionality
     function resultsButtonFunctionality() {
-        resultsButton.addEventListener('click', () => {
-            // remove answer buttons container
-            answerButtonsContainer.innerText = '';
-            answerButtonsContainer.classList.add('hide');
-            // Hide quiz info
-            questionContainer.classList.add('hide');
-            // Hide next button
-            nextButton.classList.add('hide');
-            // Hide results button
-            resultsButton.classList.add('hide');
-            // Reset Image Container
-            imageContainer.src = '';
-            usersCurrentProgress.classList.add('hide');
-            // Show results
-            userResults.classList.remove('hide');
-            // userScore gets put into a range of 3 different results; -100 - 0, 1 - 100, 101 - 200
-            // use a switch statement to determine which result to display
-            switch (true) {
-                case userScore <= -50:
-                    // Bad Score
-                    userResults.innerText = 'You are a disgrace to the Mushroom Kingdom';
-                    // Show image
-                    imageContainer.src = quizScoreImages[0].badScoreImage;
-                    break;
-                case userScore >= -51 && userScore <= 40:
-                    // Good Score
-                    userResults.innerText = 'Mario would be proud of you';
-                    // Show image
-                    imageContainer.src = quizScoreImages[0].goodScoreImage;
-                    break;
-                case userScore >= 41:
-                    // Best Score
-                    userResults.innerText = 'You are a true Super Mario Fan';
-                    // Show image
-                    imageContainer.src = quizScoreImages[0].bestScoreImage;
-                    break;
-                default:
-                    // No Score
-                    userResults.innerText = 'Did you even take the quiz?';
-                    // Show image
-                    imageContainer.src = quizScoreImages[0].noScoreImage;
-                    break;
-            }
-            showImage(userScore);
-        });
+        // remove answer buttons container
+        answerButtonsContainer.innerText = '';
+        answerButtonsContainer.classList.add('hide');
+        // Hide quiz info
+        questionContainer.classList.add('hide');
+        // Hide next button
+        nextButton.classList.add('hide');
+        // Hide results button
+        resultsButton.classList.add('hide');
+        // Reset Image Container
+        imageContainer.src = '';
+        usersCurrentProgress.classList.add('hide');
+        // Show results
+        finalResults.classList.remove('hide');
+        // Create a variable to hold the p element
+        pElement = document.createElement('p');
+        // userScore gets put into a range of 3 different results; -100 - 0, 1 - 100, 101 - 200
+        // use a switch statement to determine which result to display
+        switch (true) {
+            case userScore <= -50:
+                // Bad Score
+                pElement.innerText = 'You are a disgrace to the Mushroom Kingdom';
+                finalResults.append(pElement);
+                // Show image
+                imageContainer.src = quizScoreImages[0].badScoreImage;
+                break;
+            case userScore >= -51 && userScore <= 40:
+                // Good Score
+                pElement.innerText = 'Mario would be proud of you';
+                finalResults.append(pElement);
+                // Show image
+                imageContainer.src = quizScoreImages[0].goodScoreImage;
+                break;
+            case userScore >= 41:
+                // Best Score
+                pElement.innerText = 'You are a true Super Mario Fan';
+                finalResults.append(pElement);
+                // Show image
+                imageContainer.src = quizScoreImages[0].bestScoreImage;
+                break;
+            default:
+                // No Score
+                pElement.innerText = 'Did you even take the quiz?';
+                finalResults.append(pElement);
+                // Show image
+                imageContainer.src = quizScoreImages[0].noScoreImage;
+                break;
+        }
     }
-
+    // Show Image Throughout the Quiz
     function showImage(){
         // Display itterate through tenShuffledImages array and display each image in the image container onclick of start button or next button
         if (questionNumber.dataset.value != 10) {
