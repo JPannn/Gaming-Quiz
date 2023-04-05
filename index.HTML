@@ -6,30 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,200&display=swap" rel="stylesheet">
     <title>A Simple Mario Quiz</title>
 </head>
 <body>
     
     <main class="mainContainer">
-        <!-- Container for Header and Image -->
-        <div class="headerImageContainer">
+        <!-- Container for Header -->
+        <div class="headerContainer" data-header-container>
             <header>
                 <h1>How Well Do You Know Mario?</h1>
                 <h2>Do your best to answer ten questions about the Mario Franchise!</h2>
             </header>
-            <img src="/Images/Super-Mario-Odyssey-Wallpaper-Desktop.jpg" alt="Mario" class="imageContainer" id="imageContainer" height="500" width="500">
+        </div>
+        <!-- Container for Image -->
+        <div class="imageContainer">
+                <img src="https://i.giphy.com/media/JcFUHp7b9mnj5a01AN/giphy.webp" alt="Mario" id="imageContainer" height="500" width="500">
         </div>
         <!-- Container for Quiz Information -->
-        <div class="quizInformation hide" data-quiz-info>
+        <div class="questionContainer hide" data-question-container>
             <p>
                 <span class="questionNumber" data-question-number>Number</span>
                 <span class="questionText" data-question-text>This is a Question</span>
             </p>
         </div>
         <!-- Container for Quiz Answers -->
-        <div>
+        <div class="answerContainer">
             <div class="usersCurrentProgress hide" data-current-progress></div><br>
-            <div class="answerContainer" data-display-answers></div><br>
+            <div class="answerButtons" data-display-answers></div><br>
         </div>
         <!-- Container for Quiz Controls -->
         <div class="quizControls">
@@ -40,6 +46,19 @@
         <!-- Container for Quiz Results -->
         <div class="finalResults">
             <div class="results hide" data-user-results>How You Did</div>
+        </div>
+        <!-- Container for Crediting -->
+        <div class="creditContainer">
+            <footer>
+                <p>
+                    Created By: Justin Shawn
+                    Github: <a href="https://github.com/JPannn">JPannn</a>
+                </p>
+                <p>
+                    All Images and Content Belong to <a href="https://www.nintendo.com/">Nintendo!</a>
+                    and <a href="https://giphy.com/gifs/rabbids-mario-rabbids-rabbid-rosalina-luma-JcFUHp7b9mnj5a01AN">@rabbids</a> on Giphy
+                </p>
+            </footer>
         </div>
     </main>
 </body>

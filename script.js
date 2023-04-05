@@ -2,14 +2,17 @@
 // using the following questions and answers with arrays, objects and functions
 // Declare variables from the DOM by data attributes
 
-// Quiz Information | Questions and Answers
-const quizInfo = document.querySelector('[data-quiz-info]'); // quizInfo displays the quiz information
+// Header | Quiz Title
+const headerContainer = document.querySelector('[data-header-container]');
+// Image Container | Displays the image based on the users score and throughout the quiz
+const imageContainer = document.getElementById("imageContainer");
+// Question Information | Questions and Answers
+const questionContainer = document.querySelector('[data-question-container]'); // Question Container | Displays the question and number
 const questionNumber = document.querySelector('[data-question-number]'); // Tells user which question they are on
 const questionText = document.querySelector('[data-question-text]'); // Displays the question text
-const usersCurrentProgress = document.querySelector('[data-current-progress]'); // Returns a message to user based on score
-const imageContainer = document.getElementById("imageContainer");
-// Answer Buttons Container | Displays the answer buttons
+// Answer Container | Displays the users Progress and answer buttons 
 const answerButtonsContainer = document.querySelector('[data-display-answers]');
+const usersCurrentProgress = document.querySelector('[data-current-progress]'); // Returns a message to user based on score
 // Quiz Controls | Start, Next, Results, Restart
 const startButton = document.querySelector('[data-start-button]');
 const nextButton = document.querySelector('[data-next-button]');
@@ -153,14 +156,15 @@ function generateQuiz() {
     // Invoke functions
     startButtonFunctionality();
     nextButtonFunctionality();
-
     // Start Button Functionality
     function startButtonFunctionality() {
         startButton.addEventListener('click', function() {
             // Hide Start Button
             startButton.classList.add('hide');
+            // Hide headerContainer by manipulating 
+            headerContainer.classList.add('hide');
             // Show Information needed for Quiz
-            quizInfo.classList.remove('hide');
+            questionContainer.classList.remove('hide');
             // Show Question Number, Question Text, Answer Buttons and Image
             showQuestion();
             showAnswers();
@@ -298,12 +302,11 @@ function generateQuiz() {
             answerButtonsContainer.innerText = '';
             answerButtonsContainer.classList.add('hide');
             // Hide quiz info
-            quizInfo.classList.add('hide');
+            questionContainer.classList.add('hide');
             // Hide next button
             nextButton.classList.add('hide');
             // Hide results button
             resultsButton.classList.add('hide');
-            // Hide display score
             // Reset Image Container
             imageContainer.src = '';
             usersCurrentProgress.classList.add('hide');
