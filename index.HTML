@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,200&display=swap" rel="stylesheet">
-    <title>A Simple Mario Quiz</title>
+    <title>(10) Mario Quiz</title>
 </head>
 <body>
     
@@ -23,7 +23,7 @@
         </div>
         <!-- Container for Image -->
         <div class="imageContainer">
-                <img src="https://i.giphy.com/media/JcFUHp7b9mnj5a01AN/giphy.webp" alt="Mario" id="imageContainer" height="500" width="500">
+                <img src="https://i.giphy.com/media/JcFUHp7b9mnj5a01AN/giphy.webp" alt="Mario" id="imageContainer"  width="356px" height="356px">
         </div>
         <!-- Container for Quiz Information -->
         <div class="questionContainer hide" data-question-container>
@@ -33,15 +33,13 @@
             </p>
         </div>
         <!-- Container for Quiz Answers -->
-        <div class="answerContainer">
+        <div class="answerContainer">   
             <div class="usersCurrentProgress hide" data-current-progress></div>
             <div class="answerButtons" data-display-answers></div>
         </div>
         <!-- Container for Quiz Controls -->
-        <div class="quizControls">
-            <button class="startQuiz" data-start-button>Start Quiz</button>
-            <button class="nextQuestion hide" data-next-button>Next Question</button>
-            <button class="resultsButton hide" data-results-button>Results</button>
+        <div class="controlButtonContainer" data-control-button-container>
+
         </div>
         <!-- Container for Quiz Results -->
         <div class="finalResults" id="finalResults">

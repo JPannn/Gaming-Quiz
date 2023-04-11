@@ -16,13 +16,35 @@
     /* Disables the button */
     pointer-events: none;
 }
-
 .mainContainer {
     /* Main container for the quiz */
-    /* display at the size of window */
-    max-width: 100%;
-    /* center the content */
-    margin: auto;
+    /* center the content in a column */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* set the font */
+    font-family: 'Poppins', sans-serif;
+    /* set the color of the text */
+    color: #333;
+    /* set the background color */
+    background-color: #fff;
+
+}
+
+.answerContainer {
+    /* Pointer */
+    cursor: pointer;
+}
+/* Arrange the buttons inside quizControls to retain the same position */
+.quizControls {
+    /* center the content in a column */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     /* set the font */
     font-family: 'Poppins', sans-serif;
     /* set the color of the text */
@@ -30,26 +52,31 @@
     /* set the background color */
     background-color: #fff;
 }
-
-.answerContainer {
-    /* Pointer */
+.controlButtonContainer > button{
+    /* center Buttons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* set the font */
+    font-family: 'Poppins', sans-serif;
+    /* set the color of the text */
+    color: #333;
+    /* set the background color */
+    background-color: #fff;
+    /* set the height */
+    height: 50px;
+    /* set the border */
+    border: 1px solid #333;
+    /* set the border radius */
+    border-radius: 5px;
+    /* set the font size */
+    font-size: 1.2rem;
+    /* set the font weight */
+    font-weight: 600;
+    /* set the text transform */
+    text-transform: uppercase;
+    /* set the cursor */
     cursor: pointer;
-}
-
-.headerContainer {
-
-}
-
-.imageContainer {
-
-}
-
-.questionContainer {
-
-}
-
-.quizControls {
-
 }
 
 .finalResults {
@@ -57,9 +84,16 @@
 }
 
 .answerButtons {
-
-}
-
-.pleaseSelectAnswer {
-    color: red;
+/* Answers to choose from
+Make it into a grid with two coloumns and two rows*/
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 10px;
+    /* set the font */
+    font-family: 'Poppins', sans-serif;
+    /* set the color of the text */
+    color: #333;
+    /* set the background color */
+    background-color: #fff;
 }

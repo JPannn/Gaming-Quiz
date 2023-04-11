@@ -10,15 +10,28 @@ const imageContainer = document.getElementById("imageContainer");
 const questionContainer = document.querySelector('[data-question-container]'); // Question Container | Displays the question and number
 const questionNumber = document.querySelector('[data-question-number]'); // Tells user which question they are on
 const questionText = document.querySelector('[data-question-text]'); // Displays the question text
-// Answer Container | Displays the users Progress and answer buttons 
+// Answer Container | Displays the users Progress and answer buttons
 const answerButtonsContainer = document.querySelector('[data-display-answers]');
 const usersCurrentProgress = document.querySelector('[data-current-progress]'); // Returns a message to user based on score
-// Quiz Controls | Start, Next, Results, Restart
-const startButton = document.querySelector('[data-start-button]');
-const nextButton = document.querySelector('[data-next-button]');
-const resultsButton = document.querySelector('[data-results-button]');
+// Control Button Container | Start, Next, Results
+const controlButtonContainer = document.querySelector('[data-control-button-container]');
+// Create Start Button append later into controlButtonContainer
+const startButton = document.createElement('button');
+startButton.innerText = 'Start';
+startButton.classList.add('controlButton');
+controlButtonContainer.appendChild(startButton);
+// Create Next Button append later into controlButtonContainer
+const nextButton = document.createElement('button');
+nextButton.innerText = 'Next';
+nextButton.classList.add('controlButton');
+nextButton.classList.add('hide');
+// Create Results Button append later into controlButtonContainer
+const resultsButton = document.createElement('button');
+resultsButton.innerText = 'Results';
+resultsButton.classList.add('controlButton');
+resultsButton.classList.add('hide');
+// Quiz Results | Displays the users score and image based on score
 const finalResults = document.getElementById('finalResults');
-const restartButton = document.querySelector('[data-restart-button]');
 // Current Array Index
 questionNumber.dataset.value = 0;
 // User Score
@@ -159,17 +172,21 @@ function generateQuiz() {
 
     // Start Button Clicked
     function startButtonClicked() {
+        // create a button element and add it to the controlButtonContainer
         startButton.addEventListener('click', startButtonFunctionality);
     }
     // Start Button Functionality
     function startButtonFunctionality() {
         // Hide Start Button
-        startButton.classList.add('hide');
-        // Hide headerContainer by manipulating 
-        headerContainer.classList.add('hide');
+        startButton.remove();
+        // Remove headerContainer When beginning the Quiz
+        headerContainer.remove();
         // Show Information needed for Quiz
         questionContainer.classList.remove('hide');
         // Show Question Number, Question Text, Answer Buttons and Image
+        // Invoke functions
+        // Append the Next Button to the controlButtonContainer
+        controlButtonContainer.appendChild(nextButton);
         showQuestion();
         showAnswers();
         showImage();
@@ -190,8 +207,7 @@ function generateQuiz() {
         userScoreNumberToText();
         updateQuestionNumber();
         if(questionNumber.dataset.value == 10) {
-            nextButton.classList.add('hide');
-            resultsButton.classList.remove('hide');
+            nextButton.remove();
             userScoreNumberToText();
             resultButtonClicked();
         }
@@ -256,7 +272,12 @@ function generateQuiz() {
             // Show the next button if questionNumber.dataset.value is less than 10
             if (questionNumber.dataset.value != 10) {
                 nextButton.classList.remove('hide');
+            } else if(questionNumber.dataset.value == 10) {
+                // Append the Results Button to the controlButtonContainer
+                controlButtonContainer.appendChild(resultsButton);
+                resultsButton.classList.remove('hide');
             }
+
         });
     }
     // Uses a Range of Numbers from userScore to return a message.
@@ -308,18 +329,19 @@ function generateQuiz() {
     }
     // Results Button Functionality
     function resultsButtonFunctionality() {
-        // remove answer buttons container
+        // Remove the answer buttons container
         answerButtonsContainer.innerText = '';
         answerButtonsContainer.classList.add('hide');
-        // Hide quiz info
+        answerButtonsContainer.classList.add('disabled');
+        answerButtonsContainer.remove();
+        usersCurrentProgress.remove();
+        // Hide questionContainer
+        questionContainer.innerText = '';
         questionContainer.classList.add('hide');
-        // Hide next button
-        nextButton.classList.add('hide');
-        // Hide results button
-        resultsButton.classList.add('hide');
+        // Remove results button
+        resultsButton.remove();
         // Reset Image Container
         imageContainer.src = '';
-        usersCurrentProgress.classList.add('hide');
         // Show results
         finalResults.classList.remove('hide');
         // Create a variable to hold the p element
