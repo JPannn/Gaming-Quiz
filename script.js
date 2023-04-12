@@ -345,30 +345,39 @@ function generateQuiz() {
         // Show results
         finalResults.classList.remove('hide');
         // Create a variable to hold the p element
-        pElement = document.createElement('p');
+        const pElement = document.createElement('p');
+        // Create a new p element to tell the user to try again
+        const pElement2 = document.createElement('p');
+        pElement2.innerText = 'Refresh the page to try again!';
         // userScore gets put into a range of 3 different results; -100 - 0, 1 - 100, 101 - 200
         // use a switch statement to determine which result to display
         switch (true) {
             case userScore <= -50:
                 // Bad Score
-                pElement.innerText = 'You are a disgrace to the Mushroom Kingdom';
+                pElement.innerText = 'You are a disgrace to the Mushroom Kingdom...';
                 finalResults.append(pElement);
                 // Show image
                 imageContainer.src = quizScoreImages[0].badScoreImage;
+                // Append pElement2 to finalResults
+                finalResults.append(pElement2);
                 break;
             case userScore >= -51 && userScore <= 40:
                 // Good Score
-                pElement.innerText = 'Mario would be proud of you';
+                pElement.innerText = 'Mario would be proud of you!';
                 finalResults.append(pElement);
                 // Show image
                 imageContainer.src = quizScoreImages[0].goodScoreImage;
+                // Append pElement2 to finalResults
+                finalResults.append(pElement2);
                 break;
             case userScore >= 41:
                 // Best Score
-                pElement.innerText = 'You are a true Super Mario Fan';
+                pElement.innerText = 'You are a true Super Mario Fan!';
                 finalResults.append(pElement);
                 // Show image
                 imageContainer.src = quizScoreImages[0].bestScoreImage;
+                // Append pElement2 to finalResults
+                finalResults.append(pElement2);
                 break;
             default:
                 // No Score
@@ -376,6 +385,8 @@ function generateQuiz() {
                 finalResults.append(pElement);
                 // Show image
                 imageContainer.src = quizScoreImages[0].noScoreImage;
+                // Append pElement2 to finalResults
+                finalResults.append(pElement2);
                 break;
         }
     }
@@ -386,6 +397,9 @@ function generateQuiz() {
             imageContainer.src = "";
             const tempImage = tenShuffledImages[questionNumber.dataset.value];
             imageContainer.src = tempImage;
+            // set image size to 536 x 536
+            imageContainer.style.width = '386px';
+            imageContainer.style.height = '386px';
         }
     }
 }

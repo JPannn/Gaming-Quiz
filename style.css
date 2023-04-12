@@ -25,75 +25,85 @@
     align-items: center;
     text-align: center;
     /* set the font */
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Permanent Marker', cursive;
+    /* set the font size larger */
+    font-size: 20px;
     /* set the color of the text */
-    color: #333;
-    /* set the background color */
-    background-color: #fff;
-
-}
-
-.answerContainer {
-    /* Pointer */
-    cursor: pointer;
-}
-/* Arrange the buttons inside quizControls to retain the same position */
-.quizControls {
-    /* center the content in a column */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    /* set the font */
-    font-family: 'Poppins', sans-serif;
-    /* set the color of the text */
-    color: #333;
-    /* set the background color */
-    background-color: #fff;
+    color: #ffffff;
+    /* set the background color to linear gradiant */
+    background: linear-gradient(180deg, rgb(204, 0, 0) 0%, rgb(0, 13, 255) 100%);
+    /* Round out the edges */
+    border-radius: 10px;
+    /* set the margin */
+    margin-left: 300px;
+    margin-right: 300px;
+    /* set the padding */
+    padding : 20px;
 }
 .controlButtonContainer > button{
-    /* center Buttons */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* set the font */
-    font-family: 'Poppins', sans-serif;
-    /* set the color of the text */
-    color: #333;
-    /* set the background color */
-    background-color: #fff;
-    /* set the height */
-    height: 50px;
-    /* set the border */
-    border: 1px solid #333;
-    /* set the border radius */
-    border-radius: 5px;
-    /* set the font size */
-    font-size: 1.2rem;
-    /* set the font weight */
-    font-weight: 600;
-    /* set the text transform */
-    text-transform: uppercase;
-    /* set the cursor */
+    /* Control buttons */
+    font-family: 'Permanent Marker', cursive;
+    /* set the font size larger */
+    font-size: 20px;
+    /* set the background color to linear gradiant */
+    background: white;
+    /* Round out the edges */
+    border-radius: 10px;
+}
+.controlButtonContainer > button:hover{
+    /* Change cursor to pointer when hovering a button*/
     cursor: pointer;
+    /* Change colors */
+    color: rgb(246, 255, 0);
+    /* Change the background color of button to rgb(56, 129, 247) */
+    background-color: rgb(255, 0, 251);
 }
 
-.finalResults {
-
-}
-
-.answerButtons {
-/* Answers to choose from
-Make it into a grid with two coloumns and two rows*/
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-gap: 10px;
+/* Change the answer buttons */
+.answerButtons > button {
     /* set the font */
-    font-family: 'Poppins', sans-serif;
-    /* set the color of the text */
-    color: #333;
-    /* set the background color */
-    background-color: #fff;
+    font-family: 'Permanent Marker', cursive;
+    /* set the font size larger */
+    font-size: 20px;
+    /* set the background color to linear gradiant */
+    background: white;
+    /* Round out the edges */
+    border-radius: 10px;
+}
+
+/* Change cursor to pointer when hovering a button*/
+.answerButtons > button:hover {
+    cursor: pointer;
+    /* Change colors */
+    color: rgb(246, 255, 0);
+    /* Change the background color of button to rgb(56, 129, 247) */
+    background-color: rgb(255, 0, 251);
+}
+
+.imageContainer > img {
+    /* Create a border around the images */
+    /* Create a luigi border */
+    border: 5px solid rgb(255, 255, 255);
+    /* Round out the edges */
+    border-radius: 10px;
+}
+
+.creditContainer > footer{
+    /* bottom center of window */
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(49, 39, 39);
+    color: rgb(181, 45, 45);
+    text-align: center;
+}
+.creditContainer > footer > p > a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+
+.creditContainer > footer > p > a:hover {
+    color: rgb(59, 162, 251);
+    text-decoration: underline;
 }
